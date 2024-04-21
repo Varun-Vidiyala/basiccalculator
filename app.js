@@ -11,7 +11,7 @@ const dotButton = document.getElementById('dot');
 let currentOperand = '';
 let previousOperand = '';
 let operation = null;
-
+let operationsAll =['+','-','*','/'];
 numberButtons.forEach(button =>{
     button.addEventListener('click',()=>{
         appendNumber(button.innerText);
@@ -76,7 +76,7 @@ function compute() {
 
 function updateDisplay() {
     document.getElementById('current-operand').innerText = currentOperand;
-    document.getElementById('previous-operand').innerText = previousOperand;
+    document.getElementById('previous-operand').innerText = previousOperand + (operation || '');
 }
 
 function clear() {
@@ -97,3 +97,13 @@ function appendDot() {
     currentOperand += '.';
     updateDisplay();
 }
+
+document.addEventListener('keydown',(event)=>{
+    if(event.key >=0 && event.key<=9) appendNumber(event.key);
+    if(event.key === '.') appendDot();
+    if(event.key === 'Enter' || event.key === '=') compute();
+    if(event.key === 'Backspace') deleteNumber();
+    if(event.key === 'Escape') clear();
+    if(operationsAll.includes(event.key)) chooseOperation(event.key);
+    updateDisplay();
+})
